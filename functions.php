@@ -66,10 +66,20 @@ function bear_nav_args( $args ) {
   $args['walker'] = new Bear_Nav_Walker();
 
   return $args;
-  // return preg_replace( array( '#^<ul[^>]*>#', '#</ul>$#' ), '', $links);
+}
+
+/** Whitelist body classes */
+function bear_body_class( $wp_classes, $extra_classes ) {
+
+  $whitelist = array('home', 'custom-background');
+
+  $wp_classes = array_intersect( $wp_classes, $whitelist );
+
+  return array_merge( $wp_classes, (array) $extra_classes );
 }
 
 /** Actions (in order) */
 add_action( 'after_setup_theme', 'bear_setup' );
 add_action( 'wp_enqueue_scripts', 'bear_scripts' );
 add_filter( 'wp_nav_menu_args', 'bear_nav_args' );
+add_filter( 'body_class', 'bear_body_class', 10, 2);

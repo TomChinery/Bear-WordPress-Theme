@@ -23,7 +23,7 @@ add_action( 'after_switch_theme', 'bear_switch_theme' );
  * Add message for unsuccessful theme switch.
  *
  * Prints an update nag after an unsuccessful attempt to switch to
- * Twenty Fifteen on WordPress versions prior to 4.1.
+ * Bear on WordPress versions prior to 4.1.
  * */
 function bear_upgrade_notice() {
   $message = sprintf( __( 'Bear requires at least WordPress version 4.1. You are running version %s. Please upgrade and try again.', 'bear' ), $GLOBALS['wp_version'] );
