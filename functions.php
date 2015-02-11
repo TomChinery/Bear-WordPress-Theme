@@ -6,7 +6,7 @@
 
 /** Bear only works in WordPress 4.1 or later. */
 if ( version_compare( $GLOBALS['wp_version'], '4.1-alpha', '<' ) ) {
-  require get_template_directory() . '/inc/back-compat.php';
+  require get_template_directory() . '/lib/back-compat.php';
 }
 
 /** Sets up theme defaults and registers support for WP features */
@@ -19,7 +19,7 @@ if ( ! function_exists( 'bear_setup' ) ) :
     set_post_thumbnail_size( 825, 510, true );
 
     register_nav_menus( array(
-      'primary' => __( 'Primary Menu',      'bear' ),
+      'primary' => __( 'Primary Menu', 'bear' ),
       'social'  => __( 'Footer Menu', 'bear' ),
     ) );
 
@@ -57,6 +57,19 @@ function bear_scripts() {
   wp_enqueue_style( 'bear-reset', get_template_directory_uri() . "/css/reset.css");
 }
 
+/** Set navigation defaults */
+function bear_nav_args( $args ) {
+  require get_template_directory() . '/lib/nav-walker.php';
+
+  $args['container'] = false;
+  $args['items_wrap'] = '%3$s';
+  $args['walker'] = new Bear_Nav_Walker();
+
+  return $args;
+  // return preg_replace( array( '#^<ul[^>]*>#', '#</ul>$#' ), '', $links);
+}
+
 /** Actions (in order) */
 add_action( 'after_setup_theme', 'bear_setup' );
 add_action( 'wp_enqueue_scripts', 'bear_scripts' );
+add_filter( 'wp_nav_menu_args', 'bear_nav_args' );
